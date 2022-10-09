@@ -82,7 +82,7 @@ void setup() {
   //fauxmo.addDevice(LAMP_2);  
 
   fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
-        Serial.printf("[MAIN] Device #%d (%s) state: %s value: %d\n", device_id, device_name, state ? "hoch" : "runter", value);
+        Serial.printf("[MAIN] Device #%d (%s) f\x84hrt auf Position value: %d\n", device_id, device_name, state ? "hoch" : "runter", value);
   });
   
   pinMode(displayPin20, OUTPUT);
@@ -97,7 +97,7 @@ void setup() {
 
 void demo() {
 
-  if (state == true) {
+  if (value == 1) {
 	  // Calls sit-preset and waits 20 seconds
 	  sit();
 	  delay(20000);
@@ -105,7 +105,7 @@ void demo() {
 	  wake();
   }
 
-  if (state == true) {
+  if (value == 2) {
 	  // Calls stand-preset and waits 20 seconds
 	  stand();
 	  delay(20000);
