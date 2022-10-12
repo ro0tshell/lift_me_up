@@ -16,7 +16,8 @@
 #define WIFI_SSID "REPLACE_WITH_YOUR_SSID"
 #define WIFI_PASS "REPLACE_WITH_YOUR_PASSWORD"
 
-#define TISCH "Tisch"
+#define TISCH "tisch"
+
 #define displayPin20 23 // D2 GPIO4
 #define RXD2 16 // D5 GPIO12
 #define TXD2 17 // D6 GPIO14 
@@ -66,7 +67,6 @@ const byte command_preset_4[] = { 0x9b, 0x06, 0x02, 0x00, 0x01, 0xac, 0x60, 0x9d
 void setup() {
   wifiSetup();  
   Serial.begin(115200);   // Debug serial
-  // sSerial.begin(9600);    // Flexispot E8
   // Note the format for setting a serial port is as follows: Serial2.begin(baud-rate, protocol, RX pin, TX pin);
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 
@@ -84,8 +84,8 @@ void setup() {
   fauxmo.addDevice(TISCH);
   //fauxmo.addDevice(LAMP_2);  
 
-  fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned char value) {
-        Serial.printf("[MAIN] Device #%d (%s) f\x84hrt auf Position value: %d\n", device_id, device_name, state ? "hoch" : "runter", value);
+  fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned int value) {
+        Serial.printf("[MAIN] Device #%d (%s) f\x84hrt auf Position value: %i\n", device_id, device_name, state ? "hoch" : "runter", value);
   });
   
   pinMode(displayPin20, OUTPUT);
@@ -140,8 +140,6 @@ void wake() {
   Serial.println("sending wakeup command");
   Serial2.flush();
   Serial2.write(wakeup, sizeof(wakeup));  
-  // Serial2.enableTx(true);
-  // Serial2.enableTx(false);
 }
 
 
@@ -152,8 +150,6 @@ void sit() {
   Serial.println("sending sit preset (preset_4)");
   Serial2.flush();
   Serial2.write(command_preset_4, sizeof(command_preset_4));
-  // Serial2.enableTx(true);
-  // Serial2.enableTx(false);
 }
 
 
@@ -183,7 +179,6 @@ void loop() {
 
     // Second byte defines the message length
     if (history[0] == 0x9b) {
-      int msg_len = (int)in;
       Serial.print("(LENGTH:");
       Serial.print(in);
       Serial.print(")");
