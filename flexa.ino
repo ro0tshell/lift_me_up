@@ -100,7 +100,7 @@ void setup() {
 
 void demo() {
 
-  if (value == 1 && runter == false) {
+  if (value == "1" && runter == false) {
 	  // Calls sit-preset and waits 20 seconds
 	  sit();
 	  delay(20000);
@@ -109,7 +109,7 @@ void demo() {
 	  wake();
   }
 
-  if (value == 2 && hoch == false) {
+  if (value == "2" && hoch == false) {
 	  // Calls stand-preset and waits 20 seconds
 	  stand();
 	  delay(20000);
