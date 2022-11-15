@@ -16,7 +16,7 @@
 #define WIFI_SSID "REPLACE_WITH_YOUR_SSID"
 #define WIFI_PASS "REPLACE_WITH_YOUR_PASSWORD"
 
-#define TISCH "tisch"
+#define TISCH "Tisch"
 
 #define displayPin20 23 // D2 GPIO4
 #define RXD2 16 // D5 GPIO12
@@ -29,6 +29,7 @@ fauxmoESP fauxmo;
 
 bool hoch = false;
 bool runter = false;
+bool state = true;
 
 // Wi-Fi Connection
 void wifiSetup() {
@@ -85,14 +86,14 @@ void setup() {
   //fauxmo.addDevice(LAMP_2);  
 
   fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned int value) {
-        Serial.printf("[MAIN] Device #%d (%s) f\x84hrt auf Position value: %i\n", device_id, device_name, state ? "hoch" : "runter", value);
+        Serial.printf("[MAIN] Device #%d %s mit Status: %s - f\x84hrt auf Position value: %i\n", device_id, device_name, state ? "hoch" : "runter", value);
   });
   
   pinMode(displayPin20, OUTPUT);
   digitalWrite(displayPin20, LOW);
 
   // Executes a demo
-  if ( (strcmp(device_name, TISCH) == 0) ) {
+  if ( (strcmp(device_name, Tisch) == 0) ) {
       demo();
   }      
 }
