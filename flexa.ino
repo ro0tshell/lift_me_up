@@ -67,7 +67,7 @@ const byte command_preset_4[] = { 0x9b, 0x06, 0x02, 0x00, 0x01, 0xac, 0x60, 0x9d
 
 void setup() {
   wifiSetup();  
-  Serial.begin(9600);   // Debug serial
+  Serial.begin(115200);   // Debug serial
   // Note the format for setting a serial port is as follows: Serial2.begin(baud-rate, protocol, RX pin, TX pin);
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 
