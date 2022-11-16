@@ -29,7 +29,7 @@ fauxmoESP fauxmo;
 
 bool hoch = false;
 bool runter = false;
-bool state = true;
+bool my_state = false;
 
 // Wi-Fi Connection
 void wifiSetup() {
@@ -67,7 +67,7 @@ const byte command_preset_4[] = { 0x9b, 0x06, 0x02, 0x00, 0x01, 0xac, 0x60, 0x9d
 
 void setup() {
   wifiSetup();  
-  Serial.begin(115200);   // Debug serial
+  Serial.begin(9600);   // Debug serial
   // Note the format for setting a serial port is as follows: Serial2.begin(baud-rate, protocol, RX pin, TX pin);
   Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 
@@ -87,21 +87,37 @@ void setup() {
 
   fauxmo.onSetState([](unsigned char device_id, const char * device_name, bool state, unsigned int value) {
         Serial.printf("[MAIN] Device #%d %s mit Status: %s - f\x84hrt auf Position value: %i\n", device_id, device_name, state ? "hoch" : "runter", value);
+        
+        pinMode(displayPin20, OUTPUT);
+        digitalWrite(displayPin20, LOW);
+      
+        // Executes a demo
+        if ( (strcmp(device_name, TISCH) == 0) ) {
+            my_state = state;
+            demo();
+        }
   });
-  
-  pinMode(displayPin20, OUTPUT);
-  digitalWrite(displayPin20, LOW);
-
-  // Executes a demo
-  if ( (strcmp(device_name, Tisch) == 0) ) {
-      demo();
-  }      
-}
+}      
 
 
 void demo() {
 
-  if (value == 1 && runter == false) {
+  if (my_state) {
+    sit();
+	  delay(20000);
+	  hoch = false;
+    runter = true;    
+	  wake();
+  }
+  else {
+    stand();
+	  delay(20000);
+    runter = false;
+	  hoch = true;
+	  wake();
+  }
+
+/*  if (value == 1 && runter == false) {
 	  // Calls sit-preset and waits 20 seconds
 	  sit();
 	  delay(20000);
@@ -117,7 +133,7 @@ void demo() {
     runter = false;
 	  hoch = true;
 	  wake();
-  }
+  }*/
 
   // Wakeup the table to retrieve the current height
   // At the moment this is only represented as HEX value
